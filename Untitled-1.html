@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Game clicker</title>
+</head>
+<body>
+    <header>
+        <h1>Apenas Clique:</h1>
+    </header>
+    <section>
+        <p class="cont" id="counter-label">0</p>
+    </section>
+    <h3 class="nivel" id="nivel">1x</h2>
+    <div>
+        <button class="button" onclick="incrementClick()">
+            Clique
+        </button>
+    </div>
+    <div>
+        <p class="price" id="price">5</p>
+        <button class="upgrade" onclick="crescentPrice()">
+            Upgrade
+        </button>
+        <button class="upgrade-time" onclick="upgradeTime()">
+            Upgrade-time
+        </button>
+        <p class="timer" id="timerminutes">0</p>
+        <p class="timer" id="timerseconds">0</p>
+    </div>
+    <footer>
+        <h2>By: Kaio</h2>
+    </footer>
+
+    <script>
+
+    var counterVal=0;
+    var price = 5;
+    var timeUpgradePrice = 5;
+    var multiplier = 1;
+    var timerStemp = 70000;
+    var timeupgradeactive = false;
+    var timeMinutes = 0;
+    var timeSeconds = 0;
+    var timerTotal = 0;
+
+function incrementClick() {
+    counterVal = counterVal + multiplier;
+    document.getElementById("counter-label").innerHTML = counterVal.toFixed(2);
+}
+function upgradeIncrement(){
+    if(counterVal>=price){
+        counterVal = counterVal - price;
+        multiplier = multiplier+1;
+        document.getElementById("nivel").innerHTML = multiplier.toFixed(2);
+        document.getElementById("counter-label").innerHTML = counterVal.toFixed(2);
+        return 1
+    }else{
+        alert("Insuficiente")
+        return 0
+    }
+}
+function crescentPrice(){
+    if(upgradeIncrement()==1){
+        price = price*2.5
+        document.getElementById("price").innerHTML = price.toFixed(2);
+        alert(price)
+    }
+}
+
+//========================================
+
+function upgradeTime() {
+    if(counterVal>=timeUpgradePrice){
+        counterVal = counterVal - timeUpgradePrice;
+        timerStemp = timerStemp - 1000
+        document.getElementById("counter-label").innerHTML = counterVal.toFixed(2);
+        timeupgradeactive = true
+    }else{
+        alert("Insuficiente")
+    }
+}
+
+function crescentPriceTime(){
+            if(timeupgradeactive == true){
+            counterVal = counterVal + multiplier
+            document.getElementById("counter-label").innerHTML = counterVal.toFixed(2);
+            }
+}
+function timer(){
+    setTimeout(()=>{
+        timerTotal = (timerStemp/1000)/60
+        timeMinutes = timerTotal.toFixed(0)
+        timeSeconds = timerTotal - timeMinutes
+        if(timeupgradeactive == true){
+        if(timeMinutes>=1){
+        document.getElementById("timerminutes").innerHTML = timeMinutes.toFixed(0);
+        }
+        if(timeSeconds>0){
+            document.getElementById("timerseconds").innerHTML = timeSeconds;
+            timeSeconds = timeSeconds - 1
+            timerTwo()
+        }}else{
+            timer()
+        }
+    },100)
+}
+function timerTwo(){
+    setTimeout(()=>{
+        if(timeMinutes>=1){
+        document.getElementById("timerminutes").innerHTML = timeMinutes.toFixed(0);
+        }
+        if(timeSeconds>=0){
+            document.getElementById("timerseconds").innerHTML = timeSeconds;
+            timeSeconds = timeSeconds - 1
+            timerTwo()
+        }else{
+            timer()
+            crescentPriceTime()
+        }
+    },1000)
+}
+timer()
+
+    </script>
+</body>
+</html>
